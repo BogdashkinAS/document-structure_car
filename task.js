@@ -26,7 +26,6 @@ function quantityProduct() {
 }
 
 function cartAdd() {
-    array = []
     productAdd.forEach((product) => {
         product.addEventListener('click', (event) => {
             event.preventDefault()
@@ -36,25 +35,18 @@ function cartAdd() {
             let image = imageProduct.getAttribute('src')
             let quantity = Number(productMain.querySelector('.product__quantity-value').textContent)
             let cartProducts = document.querySelector('.cart__products')
-            if (!array.includes(idProduct)) {
-                cartProducts.innerHTML += `
+            let cartProductArray = Array.from(document.querySelectorAll('.cart__product'))
+            const productInCard = cartProductArray.find(element => element.dataset.id == idProduct)
+            if (productInCard) {
+                let productCount = productInCard.querySelector('.cart__product-count')
+                productCount.textContent = Number(productCount.textContent) + quantity
+                } else {
+                    cartProducts.innerHTML += `
                     <div class="cart__product" data-id="${idProduct}">
                         <img class="cart__product-image" src="${image}">
                         <div class="cart__product-count">${quantity}</div>
                     </div>`
-                if (!array.includes(idProduct)) {
-                    array.push(idProduct)
-                console.log(array)
                 }
-            } else {
-                const elements = document.querySelectorAll('[data-id]')
-                for (let element of elements) {
-                    if (element.getAttribute('data-id') == idProduct) {
-                        let productCount = element.querySelector('.cart__product-count')
-                        productCount.textContent = Number(productCount.textContent) + quantity
-                    }
-                }
-            }
         })
     })
 }
